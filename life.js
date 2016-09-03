@@ -77,6 +77,8 @@ class LifeView {
         let cell = document.createElement('td');
         let checkbox = document.createElement('input');
         this.checkboxes[y][x] = checkbox;
+        checkbox.coords = [y, x];
+
         checkbox.type = 'checkbox';
         cell.appendChild(checkbox);
         row.appendChild(cell);
@@ -88,6 +90,39 @@ class LifeView {
     this.grid.addEventListener('change', (e) => {
       if (e.target.nodeName.toLowerCase() == 'input') {
         this.started = false;
+      }
+    });
+
+    this.grid.addEventListener('keyup', (e) => {
+      let checkbox = e.target;
+
+      if (checkbox.nodeName.toLowerCase() == 'input') {
+        let coords = checkbox.coords;
+        let y = coords[0];
+        let x = coords[1];
+
+        switch (e.keyCode) {
+          case 37:
+            if (x > 0) {
+              this.checkboxes[y][x - 1].focus();
+            }
+            break;
+          case 38:
+            if (y > 0) {
+              this.checkboxes[y - 1][x].focus();
+            }
+            break;
+          case 39:
+            if (x < this.size - 1) {
+              this.checkboxes[y][x + 1].focus();
+            }
+            break;
+          case 40:
+            if (y < this.size - 1) {
+              this.checkboxes[y + 1][x].focus();
+            }
+            break;
+        }
       }
     });
 
